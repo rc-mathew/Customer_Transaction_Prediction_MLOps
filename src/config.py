@@ -31,5 +31,7 @@ EXPECTED_FEATURE_COUNT = 200
 # MODEL CONFIGURATION
 # ---------------------------------------------------------
 
-RANDOM_STATE = 42
+VALIDATION_SIZE = 0.20
 TEST_SIZE = 0.20
+
+RANDOM_STATE = 42
