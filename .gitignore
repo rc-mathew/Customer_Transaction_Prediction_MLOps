@@ -7,3 +7,6 @@ __pycache__/
 *.joblib
 *.pkl
 .DS_Store
+
+data/raw/*.csv
+data/raw/*.zip
