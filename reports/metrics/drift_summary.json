@@ -1,0 +1,18 @@
+{
+    "monitoring_type": "feature_distribution_drift",
+    "simulation_mode": true,
+    "reference_population": "training_split",
+    "current_population": "simulated_validation_batch",
+    "features_evaluated": 200,
+    "stable_features": 192,
+    "moderate_drift_features": 1,
+    "significant_drift_features": 7,
+    "ks_drift_alerts": 24,
+    "psi_drift_percentage": 4.0,
+    "psi_thresholds": {
+        "stable": "< 0.10",
+        "moderate": "0.10 to < 0.25",
+        "significant": ">= 0.25"
+    },
+    "test_set_used": false
+}
