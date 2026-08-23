@@ -1,0 +1,19 @@
+{
+    "best_cv_roc_auc": 0.8749315795206369,
+    "best_params": {
+        "classifier__min_samples_leaf": 20,
+        "classifier__max_leaf_nodes": 31,
+        "classifier__max_iter": 250,
+        "classifier__learning_rate": 0.05,
+        "classifier__l2_regularization": 2.0
+    },
+    "validation_metrics": {
+        "accuracy": 0.91035,
+        "balanced_accuracy": 0.5631521997257697,
+        "precision": 0.8602329450915142,
+        "recall": 0.12863896491664592,
+        "f1": 0.22380952380952382,
+        "roc_auc": 0.8772870083301755,
+        "pr_auc": 0.5450478518767256
+    }
+}
