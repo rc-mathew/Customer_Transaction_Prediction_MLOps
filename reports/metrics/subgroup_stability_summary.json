@@ -1,0 +1,39 @@
+{
+    "analysis_type": "data-derived subgroup stability",
+    "protected_attribute_fairness": false,
+    "reason": "Dataset contains anonymized numerical features and no verified protected demographic attributes.",
+    "features_evaluated": [
+        "var_81",
+        "var_139",
+        "var_12"
+    ],
+    "selected_threshold": 0.26000000000000006,
+    "calibration_method": "isotonic",
+    "metric_ranges": {
+        "balanced_accuracy": {
+            "minimum": 0.7122896092096312,
+            "maximum": 0.7827640078724594,
+            "range": 0.07047439866282812
+        },
+        "precision": {
+            "minimum": 0.4755244755244755,
+            "maximum": 0.5345268542199488,
+            "range": 0.05900237869547331
+        },
+        "recall": {
+            "minimum": 0.4727694090382387,
+            "maximum": 0.6623641304347826,
+            "range": 0.18959472139654387
+        },
+        "f1": {
+            "minimum": 0.47414294015107494,
+            "maximum": 0.5887681159420289,
+            "range": 0.11462517579095399
+        },
+        "roc_auc": {
+            "minimum": 0.8724271907560271,
+            "maximum": 0.8885653899545832,
+            "range": 0.01613819919855608
+        }
+    }
+}
