@@ -75,50 +75,30 @@ The production ML pipeline was evaluated using stratified validation, probabilit
 The trained production ML pipeline is exposed through a FastAPI inference service for real-time customer transaction predictions. 
 
 ## Kubernetes Production Deployment
+## AWS ECR + Amazon EKS Production Deployment
 
-The FastAPI inference service has been containerized with Docker and deployed to a local Kubernetes cluster.
+The FastAPI inference service was containerized with Docker and validated through a complete AWS-hosted Kubernetes deployment.
 
-### AWS ECR Container Registry Validation
-
-The production Docker image was successfully published to **Amazon Elastic Container Registry (ECR)** and subsequently used by the Kubernetes deployment.
-
-**ECR image:**
-
-`480151323504.dkr.ecr.us-east-1.amazonaws.com/customer-transaction-prediction:latest`
-
-The Kubernetes deployment was updated to use the ECR-hosted image and completed a successful rolling deployment:
+### Production Deployment Flow
 
 ```text
-deployment.apps/customer-transaction-ml image updated
-deployment "customer-transaction-ml" successfully rolled out
-
-
-
-### Deployment configuration
-
-- **Deployment:** `kubernetes/deployment.yaml`
-- **Replicas:** 2
-- **Container port:** 8000
-- **Rolling update strategy:** zero unavailable pods with one surge pod
-- **Readiness probe:** `GET /health`
-- **Liveness probe:** `GET /health`
-- **Service:** ClusterIP service exposing port 80 to container port 8000
-- **Horizontal Pod Autoscaler:** 2–5 replicas
-- **CPU autoscaling target:** 70%
-
-### End-to-End Kubernetes Inference Test
-
-A real row from `data/raw/train.csv` was used to validate production inference through the Kubernetes-deployed API.
-
-```json
-{
-  "http_status": 200,
-  "actual_target": 0,
-  "prediction": 0,
-  "probability": 0.023662020726512043,
-  "threshold": 0.26
-}
-
+Trained ML Model
+      ↓
+FastAPI Inference API
+      ↓
+Docker Image
+      ↓
+Amazon Elastic Container Registry (ECR)
+      ↓
+Amazon Elastic Kubernetes Service (EKS)
+      ↓
+Kubernetes Deployment
+      ↓
+Kubernetes Service / AWS Load Balancer
+      ↓
+Live /predict Request
+      ↓
+Prediction Response
 ```
 
 ### API Endpoints
@@ -290,7 +270,31 @@ Pipeline flow:
 
 The GitHub Actions workflow was successfully executed with both jobs passing:
 
-- **Test:** Passed
+- The FastAPI inference service has been containerized with Docker and deployed to a local Kubernetes cluster.
+
+### AWS ECR Container Registry Validation
+
+The production Docker image was successfully published to **Amazon Elastic Container Registry (ECR)** and subsequently used by the Kubernetes deployment.
+
+**ECR image:**
+
+`480151323504.dkr.ecr.us-east-1.amazonaws.com/customer-transaction-prediction:latest`
+
+The Kubernetes deployment was updated to use the ECR-hosted image and completed a successful rolling deployment:
+
+```text
+deployment.apps/customer-transaction-ml image updated
+deployment "customer-transaction-ml" successfully rolled out
+
+```
+
+### Deployment configuration
+
+- **Deployment:** `kubernetes/deployment.yaml`
+- **Replicas:** 2
+- **Container port:** 8000
+- **Rolling update strategy:** zero unavailable pods with one surge pod
+- **Readines**Test:** Passed
 - **Build Docker Image:** Passed
 - **Overall workflow status:** Success
 
