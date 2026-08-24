@@ -16,6 +16,51 @@ An end-to-end machine learning project for customer transaction prediction, cove
 - Kubernetes deployment
 - Data and model drift monitoring
 - Cloud deployment
+
+## System Architecture
+
+The project follows an end-to-end MLOps workflow from raw customer transaction data through model development, deployment, CI/CD, and production monitoring.
+
+```mermaid
+flowchart TD
+    A[Customer Transaction Data] --> B[Data Preprocessing]
+    B --> C[Feature Engineering]
+    C --> D[Train / Validation / Test Split]
+
+    D --> E[Model Training and Comparison]
+    E --> F[Cross-Validation and Hyperparameter Tuning]
+    F --> G[Model Evaluation]
+
+    G --> H[ROC-AUC and PR-AUC]
+    G --> I[Probability Calibration]
+    G --> J[Threshold Optimization]
+
+    H --> K[Production Candidate Model]
+    I --> K
+    J --> K
+
+    K --> L[Serialized Model Artifact - Joblib]
+    L --> M[FastAPI Inference Service]
+    M --> N[Docker Container]
+    N --> O[Kubernetes / Deployment Layer]
+
+    O --> P[Monitoring]
+    P --> Q[Data and Model Drift Detection]
+
+    R[GitHub Push] --> S[GitHub Actions CI]
+    S --> T[Automated Tests]
+```
+
+### Architecture Coverage
+
+- **Data layer:** preprocessing, feature engineering, and stratified dataset splitting
+- **Model layer:** training, comparison, cross-validation, tuning, and evaluation
+- **Decision layer:** probability calibration and decision-threshold optimization
+- **Serving layer:** serialized model served through FastAPI
+- **Containerization:** Docker-based application packaging
+- **Deployment:** Kubernetes-ready deployment structure
+- **CI/CD:** automated testing through GitHub Actions
+- **Monitoring:** data and model drift detection
 ## Model Evaluation Results
 
 The production ML pipeline was evaluated using stratified validation, probability calibration, and decision-threshold optimization.
