@@ -97,6 +97,8 @@ A real row from `data/raw/train.csv` was used to validate production inference t
   "threshold": 0.26
 }
 
+```
+
 ### API Endpoints
 
 - `GET /` — API information
