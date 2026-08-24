@@ -1,5 +1,5 @@
 # Customer Transaction Prediction - End-to-End MLOps
-
+[![CI - Tests](https://github.com/rc-mathew/Customer_Transaction_Prediction_MLOps/actions/workflows/ci.yml/badge.svg)](https://github.com/rc-mathew/Customer_Transaction_Prediction_MLOps/actions/workflows/ci.yml)
 An end-to-end machine learning project for customer transaction prediction, covering model development, evaluation, deployment, CI/CD, containerization, monitoring, subgroup stability analysis, calibration, and cloud deployment.
 
 ## Implemented MLOps Components
