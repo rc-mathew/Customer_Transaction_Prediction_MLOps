@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -29,16 +33,39 @@ jobs:
         run: pytest -v
 
   docker:
-    name: Build Docker Image
+    name: Build and Publish Docker Image
     runs-on: ubuntu-latest
     needs: test
+
+    env:
+      IMAGE_NAME: ghcr.io/rc-mathew/customer-transaction-prediction-ml
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Build Docker image
-        run: docker build -t customer-transaction-ml:${{ github.sha }} .
+        run: |
+          docker build \
+            -t $IMAGE_NAME:${{ github.sha }} \
+            -t $IMAGE_NAME:latest \
+            .
 
       - name: Verify Docker image
-        run: docker images customer-transaction-ml
+        run: docker images $IMAGE_NAME
+
+      - name: Log in to GitHub Container Registry
+        if: github.event_name == 'push'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish commit image to GHCR
+        if: github.event_name == 'push'
+        run: docker push $IMAGE_NAME:${{ github.sha }}
+
+      - name: Publish latest image to GHCR
+        if: github.event_name == 'push'
+        run: docker push $IMAGE_NAME:latest
