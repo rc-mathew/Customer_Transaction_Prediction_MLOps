@@ -50,6 +50,82 @@ Validation performance at the selected threshold:
 | Recall | 0.560 |
 | F1 Score | 0.534 |
 | Balanced Accuracy | 0.750 |
+## Model Performance
+
+The final production-candidate model was selected based on hold-out performance, with particular emphasis on ROC-AUC and PR-AUC because the target variable is imbalanced.
+
+### Final Champion Model
+
+**Gaussian Naive Bayes (Gaussian NB)** was selected as the current champion model.
+
+| Metric | Hold-out Result |
+|---|---:|
+| ROC-AUC | **0.8882** |
+| PR-AUC | **0.5769** |
+| Precision | **0.4921** |
+| Recall | **0.6159** |
+| F1 Score | **0.5471** |
+| Balanced Accuracy | **0.7724** |
+| Matthews Correlation Coefficient (MCC) | **0.4940** |
+| Brier Score | **0.0610** |
+
+The ROC-AUC of **0.8882** indicates strong discrimination between positive and negative customer transaction outcomes. PR-AUC was also evaluated because it provides a more informative view of model performance under class imbalance.
+
+## Decision Threshold Strategy
+
+A default classification threshold of `0.50` is not necessarily optimal for an imbalanced classification problem.
+
+Threshold optimization was therefore performed separately from probability-model selection.
+
+### Analytical Threshold
+
+The validation analysis identified an F1-optimized analytical threshold of:
+
+**0.2259**
+
+At this threshold, the champion model achieved:
+
+- Precision: **0.4921**
+- Recall: **0.6159**
+- F1 Score: **0.5471**
+- Balanced Accuracy: **0.7724**
+- MCC: **0.4940**
+
+### Deployment Threshold
+
+The production FastAPI implementation currently uses a deployment threshold of:
+
+The analytical F1-optimized threshold identified during model evaluation was:
+
+**0.2259**
+
+The production FastAPI implementation currently uses:
+
+**0.26**
+
+The deployment threshold is maintained separately from the analytical threshold so that production decision policy can be adjusted according to business costs, operational requirements, calibration, and governance considerations.
+
+This is intentionally distinguished from the notebook's analytical threshold. The notebook threshold (`0.2259`) represents the threshold obtained during analytical model evaluation, while the API threshold (`0.26`) represents the threshold currently configured in the deployed inference pipeline.
+
+In a real production environment, the deployment threshold should be selected according to business objectives, false-positive/false-negative costs, operational capacity, calibration performance, and governance requirements rather than relying only on F1 optimization.
+
+## Production Candidate Summary
+
+| Component | Result |
+|---|---|
+| Champion Model | **Gaussian NB** |
+| Hold-out ROC-AUC | **0.8882** |
+| Hold-out PR-AUC | **0.5769** |
+| Analytical Threshold | **0.2259** |
+| API Deployment Threshold | **0.26** |
+| Precision @ Analytical Threshold | **0.4921** |
+| Recall @ Analytical Threshold | **0.6159** |
+| F1 @ Analytical Threshold | **0.5471** |
+| Balanced Accuracy | **0.7724** |
+| MCC | **0.4940** |
+| Brier Score | **0.0610** |
+
+> **Production note:** The current champion should still be subject to business-driven threshold selection, calibration validation, out-of-time/temporal validation, drift monitoring, and model-governance checks before real-world deployment.
 
 ### Probability Calibration using validation data
 
