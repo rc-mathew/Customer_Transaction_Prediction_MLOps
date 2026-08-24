@@ -19,6 +19,20 @@ An end-to-end machine learning project for customer transaction prediction, cove
 ## Model Evaluation Results
 
 The production ML pipeline was evaluated using stratified validation, probability calibration, and decision-threshold optimization.
+## REST API Deployment
+
+The trained HistGradientBoosting pipeline is exposed through a FastAPI inference service.
+
+### API Endpoints
+
+- `GET /` — API information
+- `GET /health` — model health check
+- `POST /predict` — customer transaction prediction
+
+The API loads the serialized production model from:
+
+```text
+models/customer_transaction_model.joblib
 
 ### Decision Threshold Optimization
 
@@ -52,3 +66,4 @@ Calibration was performed using validation data rather than the untouched test s
 - Data drift monitoring
 - Automated tests for preprocessing, threshold logic, and drift detection
 - Untouched test set retained for final evaluation
+

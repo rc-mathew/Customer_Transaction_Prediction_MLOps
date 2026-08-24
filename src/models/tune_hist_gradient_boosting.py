@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-
+import joblib
 import pandas as pd
 
 from sklearn.ensemble import HistGradientBoostingClassifier
@@ -181,6 +181,31 @@ def main():
         X_valid,
         y_valid,
     )
+        # -----------------------------------------------------
+    # SAVE PRODUCTION MODEL
+    # -----------------------------------------------------
+
+    models_dir = Path("models")
+    models_dir.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    model_path = models_dir / "customer_transaction_model.joblib"
+
+    joblib.dump(
+        best_model,
+        model_path,
+    )
+
+    print(
+        f"\nTrained model saved to: "
+        f"{model_path}"
+    )
+
+    # -----------------------------------------------------
+    # VALIDATION RESULTS
+    # -----------------------------------------------------
 
     print("\nTUNED MODEL VALIDATION RESULTS")
     print("=" * 60)
