@@ -78,6 +78,22 @@ The trained production ML pipeline is exposed through a FastAPI inference servic
 
 The FastAPI inference service has been containerized with Docker and deployed to a local Kubernetes cluster.
 
+### AWS ECR Container Registry Validation
+
+The production Docker image was successfully published to **Amazon Elastic Container Registry (ECR)** and subsequently used by the Kubernetes deployment.
+
+**ECR image:**
+
+`480151323504.dkr.ecr.us-east-1.amazonaws.com/customer-transaction-prediction:latest`
+
+The Kubernetes deployment was updated to use the ECR-hosted image and completed a successful rolling deployment:
+
+```text
+deployment.apps/customer-transaction-ml image updated
+deployment "customer-transaction-ml" successfully rolled out
+
+
+
 ### Deployment configuration
 
 - **Deployment:** `kubernetes/deployment.yaml`
