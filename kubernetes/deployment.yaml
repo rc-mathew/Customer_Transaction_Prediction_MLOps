@@ -29,7 +29,7 @@ spec:
         - name: customer-transaction-api
 
           # We will replace this with the production image later.
-          image: customer-transaction-ml:latest
+          image: 480151323504.dkr.ecr.us-east-1.amazonaws.com/customer-transaction-prediction:latest
 
           imagePullPolicy: IfNotPresent
 
