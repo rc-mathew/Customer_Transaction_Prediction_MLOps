@@ -99,6 +99,32 @@ Validation performance at the selected threshold:
 
 The final production-candidate model was selected based on hold-out performance, with particular emphasis on ROC-AUC and PR-AUC because the target variable is imbalanced.
 
+## Model Explainability — SHAP
+
+SHAP (SHapley Additive exPlanations) was implemented to provide
+global model explainability and identify the features contributing
+most strongly to the production model's predictions.
+
+The explainability pipeline:
+
+- Loads the trained production model
+- Computes SHAP values on a representative sample
+- Ranks features using mean absolute SHAP values
+- Generates a SHAP summary plot
+- Exports feature importance results to CSV
+
+### SHAP Summary Plot
+
+![SHAP Summary Plot](reports/shap/shap_summary.png)
+
+The plot shows both the magnitude and direction of each feature's
+contribution to model predictions. Features are ranked according to
+their overall impact on the model output.
+
+Detailed feature importance values are available in:
+
+`reports/shap/shap_feature_importance.csv`
+
 ### Final Champion Model
 
 **Gaussian Naive Bayes (Gaussian NB)** was selected as the current champion model.
