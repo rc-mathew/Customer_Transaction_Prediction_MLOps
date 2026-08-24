@@ -1,6 +1,11 @@
 # Customer Transaction Prediction - End-to-End MLOps
 [![CI - Tests](https://github.com/rc-mathew/Customer_Transaction_Prediction_MLOps/actions/workflows/ci.yml/badge.svg)](https://github.com/rc-mathew/Customer_Transaction_Prediction_MLOps/actions/workflows/ci.yml)
-An end-to-end machine learning project for customer transaction prediction, covering model development, evaluation, deployment, CI/CD, containerization, monitoring, subgroup stability analysis, calibration, and cloud deployment.
+
+An end-to-end machine learning project for customer transaction prediction,
+covering model development, evaluation, probability calibration, explainability,
+FastAPI serving, Docker containerization, local Kubernetes deployment,
+automated testing, GitHub Actions CI, subgroup stability analysis, and
+production drift monitoring.
 
 ## Implemented MLOps Components
 
@@ -12,14 +17,15 @@ An end-to-end machine learning project for customer transaction prediction, cove
 - REST API deployment
 - Automated testing
 - Docker containerization
-- CI/CD with GitHub Actions
+- Continuous Integration with GitHub Actions
+- Docker image build and CI validation
 - Kubernetes deployment
 - Data and model drift monitoring
-- Cloud deployment
+
 
 ## System Architecture
 
-The project follows an end-to-end MLOps workflow from raw customer transaction data through model development, deployment, CI/CD, and production monitoring.
+The project follows an end-to-end MLOps workflow from raw customer transaction data through model development, deployment, continous integration, and production monitoring.
 
 ```mermaid
 flowchart TD
@@ -66,7 +72,7 @@ flowchart TD
 The production ML pipeline was evaluated using stratified validation, probability calibration, and decision-threshold optimization.
 ## REST API Deployment
 
-The trained HistGradientBoosting pipeline is exposed through a FastAPI inference service.
+The trained production ML pipeline is exposed through a FastAPI inference service for real-time customer transaction predictions. 
 
 ## Kubernetes Production Deployment
 
