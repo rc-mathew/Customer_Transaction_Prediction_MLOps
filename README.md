@@ -68,6 +68,35 @@ The production ML pipeline was evaluated using stratified validation, probabilit
 
 The trained HistGradientBoosting pipeline is exposed through a FastAPI inference service.
 
+## Kubernetes Production Deployment
+
+The FastAPI inference service has been containerized with Docker and deployed to a local Kubernetes cluster.
+
+### Deployment configuration
+
+- **Deployment:** `kubernetes/deployment.yaml`
+- **Replicas:** 2
+- **Container port:** 8000
+- **Rolling update strategy:** zero unavailable pods with one surge pod
+- **Readiness probe:** `GET /health`
+- **Liveness probe:** `GET /health`
+- **Service:** ClusterIP service exposing port 80 to container port 8000
+- **Horizontal Pod Autoscaler:** 2–5 replicas
+- **CPU autoscaling target:** 70%
+
+### End-to-End Kubernetes Inference Test
+
+A real row from `data/raw/train.csv` was used to validate production inference through the Kubernetes-deployed API.
+
+```json
+{
+  "http_status": 200,
+  "actual_target": 0,
+  "prediction": 0,
+  "probability": 0.023662020726512043,
+  "threshold": 0.26
+}
+
 ### API Endpoints
 
 - `GET /` — API information

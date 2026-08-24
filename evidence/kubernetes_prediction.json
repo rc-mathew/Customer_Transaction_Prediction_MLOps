@@ -1,0 +1,10 @@
+{
+  "test": "Kubernetes production inference with real dataset row",
+  "http_status": 200,
+  "actual_target": 0,
+  "api_response": {
+    "prediction": 0,
+    "probability": 0.023662029726512043,
+    "threshold": 0.26
+  }
+}
