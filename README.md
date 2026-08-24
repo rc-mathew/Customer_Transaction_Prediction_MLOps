@@ -33,7 +33,7 @@ The API loads the serialized production model from:
 
 ```text
 models/customer_transaction_model.joblib
-
+```
 ### Decision Threshold Optimization
 
 A fixed classification threshold of 0.50 is not necessarily optimal for an imbalanced classification problem. The decision threshold was therefore optimized on the validation data by maximizing the F1 score.
