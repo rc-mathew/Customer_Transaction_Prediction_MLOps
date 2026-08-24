@@ -27,3 +27,18 @@ jobs:
 
       - name: Run tests
         run: pytest -v
+
+          docker:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t customer-transaction-ml:${{ github.sha }} .
+
+      - name: Verify Docker image
+        run: docker images customer-transaction-ml
