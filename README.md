@@ -245,3 +245,31 @@ Calibration was performed using validation data rather than the untouched test s
 - Automated tests for preprocessing, threshold logic, and drift detection
 - Untouched test set retained for final evaluation
 
+## Continuous Integration (CI)
+
+This project uses GitHub Actions to automatically validate the ML application on every push to the `main` branch and on pull requests.
+
+### CI Pipeline
+
+The CI workflow performs the following stages:
+
+1. Checks out the repository.
+2. Sets up Python 3.11.
+3. Installs project dependencies.
+4. Runs the automated test suite using `pytest`.
+5. Builds the production Docker image only after the tests pass.
+6. Verifies that the Docker image was created successfully.
+
+Pipeline flow:
+
+`Git Push → Automated Tests → Docker Image Build → Docker Image Verification`
+
+### CI Validation Evidence
+
+The GitHub Actions workflow was successfully executed with both jobs passing:
+
+- **Test:** Passed
+- **Build Docker Image:** Passed
+- **Overall workflow status:** Success
+
+This provides automated validation that the application passes its test suite and can be packaged successfully as a Docker container before progressing toward deployment.
