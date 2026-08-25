@@ -294,21 +294,21 @@ At this threshold, the champion model achieved:
 
 ### Deployment Threshold
 
-The production FastAPI implementation currently uses a deployment threshold of:
 
-The analytical F1-optimized threshold identified during model evaluation was:
+
+The analytical F1-optimized threshold identified during model evaluation is:
 
 **0.2259**
 
-The production FastAPI implementation currently uses:
+The production FastAPI inference service currently uses a deployment threshold of:
 
 **0.26**
 
-The deployment threshold is maintained separately from the analytical threshold so that production decision policy can be adjusted according to business costs, operational requirements, calibration, and governance considerations.
+The deployment threshold is intentionally maintained separately from the analytical model-selection threshold.
 
-This is intentionally distinguished from the notebook's analytical threshold. The notebook threshold (`0.2259`) represents the threshold obtained during analytical model evaluation, while the API threshold (`0.26`) represents the threshold currently configured in the deployed inference pipeline.
+The analytical threshold (`0.2259`) represents the value obtained during model evaluation, while the production threshold (`0.26`) represents the decision policy currently configured in the deployed inference pipeline.
 
-In a real production environment, the deployment threshold should be selected according to business objectives, false-positive/false-negative costs, operational capacity, calibration performance, and governance requirements rather than relying only on F1 optimization.
+In a real production environment, this threshold should be selected according to business objectives, false-positive/false-negative costs, operational capacity, probability calibration, and governance requirements rather than relying solely on F1-score optimization.
 
 ### Production Decision Threshold
 
