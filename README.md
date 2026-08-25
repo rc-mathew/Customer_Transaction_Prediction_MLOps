@@ -239,6 +239,66 @@ This is intentionally distinguished from the notebook's analytical threshold. Th
 
 In a real production environment, the deployment threshold should be selected according to business objectives, false-positive/false-negative costs, operational capacity, calibration performance, and governance requirements rather than relying only on F1 optimization.
 
+## 📊 Model Comparison & MLflow Experiment Tracking
+
+Multiple classification models were evaluated using both conventional and
+imbalance-aware metrics. Experiments were tracked using MLflow for
+reproducible model comparison.
+
+| Model | Accuracy | Balanced Accuracy | Precision | Recall | F1 | ROC-AUC | PR-AUC |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Gaussian Naive Bayes | 0.9204 | 0.6735 | 0.7000 | 0.3635 | 0.4794 | **0.8864** | **0.5764** |
+| HistGradientBoosting | 0.9103 | 0.5630 | 0.8571 | 0.1284 | 0.2233 | 0.8776 | 0.5462 |
+| Logistic Regression | 0.7759 | 0.7743 | 0.2783 | 0.7723 | 0.4092 | 0.8543 | 0.4932 |
+| Random Forest | 0.8995 | 0.5000 | 0.0000 | 0.0000 | 0.0000 | 0.8176 | 0.3637 |
+
+### 🏆 Best Model by ROC-AUC
+
+**Gaussian Naive Bayes achieved the highest ROC-AUC of 0.8864 and
+PR-AUC of 0.5764 in the model-comparison evaluation.**
+
+Although Gaussian Naive Bayes achieved the strongest ranking performance,
+Logistic Regression produced substantially higher minority-class recall.
+This highlights the trade-off between ROC-AUC, precision, recall and
+minority-class detection in an imbalanced classification problem.
+
+Random Forest demonstrates why accuracy alone is insufficient: despite
+approximately 0.90 accuracy, minority-class recall and F1 were 0.
+
+### 🔬 MLflow Experiment Tracking
+
+Each candidate model is tracked as an independent MLflow run with:
+
+- Accuracy
+- Balanced Accuracy
+- Precision
+- Recall
+- F1 Score
+- ROC-AUC
+- PR-AUC
+- Training time
+- Inference time
+
+### MLflow Experiment Results
+
+The following screenshots provide evidence of experiment tracking and evaluation metrics recorded in MLflow.
+
+#### Model Performance Metrics
+
+![MLflow Metrics - Performance](evidence/metrics1.png)
+
+#### Additional Evaluation Metrics
+
+![MLflow Metrics - Evaluation](evidence/metrics2.png)
+
+#### ROC-AUC, Recall and Training Performance
+
+![MLflow Metrics - ROC AUC](evidence/metrics3.png)
+
+The complete comparison is exported to:
+
+`reports/metrics/model_comparison.csv`
+
 ## Production Candidate Summary
 
 | Component | Result |

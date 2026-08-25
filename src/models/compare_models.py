@@ -1,6 +1,7 @@
 import time
 from pathlib import Path
 
+import mlflow
 import pandas as pd
 
 from sklearn.ensemble import (
@@ -20,6 +21,7 @@ from sklearn.metrics import (
 from sklearn.naive_bayes import GaussianNB
 from sklearn.pipeline import Pipeline
 
+from src import models
 from src.data.load_data import load_training_data
 from src.data.split_data import split_dataset
 from src.features.preprocessing import (
@@ -29,6 +31,8 @@ from src.features.preprocessing import (
 
 
 RANDOM_STATE = 42
+MLFLOW_TRACKING_URI = "sqlite:///mlflow.db"
+MLFLOW_EXPERIMENT_NAME = "customer-transaction-model-comparison"
 
 
 def evaluate_model(
@@ -93,6 +97,10 @@ def evaluate_model(
 
 
 def main():
+    mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+    mlflow.set_experiment(MLFLOW_EXPERIMENT_NAME)
+
+    print(f"\nMLflow experiment: {MLFLOW_EXPERIMENT_NAME}")
 
     print("\nLoading training data...")
 
@@ -183,8 +191,10 @@ def main():
     results = []
 
     for name, model in models.items():
-        results.append(
-            evaluate_model(
+
+        with mlflow.start_run(run_name=name):
+
+            metrics = evaluate_model(
                 name,
                 model,
                 X_train,
@@ -192,7 +202,24 @@ def main():
                 X_valid,
                 y_valid,
             )
-        )
+
+            results.append(metrics)
+
+            mlflow.log_param("model_name", name)
+
+            mlflow.log_metrics(
+                {
+                    "accuracy": metrics["Accuracy"],
+                    "balanced_accuracy": metrics["Balanced Accuracy"],
+                    "precision": metrics["Precision"],
+                    "recall": metrics["Recall"],
+                    "f1": metrics["F1"],
+                    "roc_auc": metrics["ROC-AUC"],
+                    "pr_auc": metrics["PR-AUC"],
+                    "training_time_seconds": metrics["Training Time (s)"],
+                    "inference_time_seconds": metrics["Inference Time (s)"],
+                }
+            )
 
     results_df = pd.DataFrame(results)
 
