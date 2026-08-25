@@ -128,6 +128,32 @@ Validation performance at the selected threshold:
 | Recall | 0.560 |
 | F1 Score | 0.534 |
 | Balanced Accuracy | 0.750 |
+
+### Validation Results
+
+| Model | Accuracy | Balanced Accuracy | Precision | Recall | F1 | ROC-AUC | PR-AUC |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| **Gaussian Naive Bayes** | **0.9204** | 0.6735 | 0.7000 | 0.3645 | **0.4794** | **0.8864** | **0.5764** |
+| HistGradientBoosting | 0.9103 | 0.5630 | **0.8571** | 0.1284 | 0.2233 | 0.8776 | 0.5462 |
+| Logistic Regression | 0.7759 | **0.7743** | 0.2783 | **0.7723** | 0.4092 | 0.8543 | 0.4932 |
+| Random Forest | 0.8995 | 0.5000 | 0.0000 | 0.0000 | 0.0000 | 0.8176 | 0.3637 |
+
+### Champion Model Selection
+
+Gaussian Naive Bayes was selected as the champion based primarily on ranking performance for the imbalanced classification problem. It achieved the highest ROC-AUC (**0.8864**) and PR-AUC (**0.5764**) among the evaluated models.
+
+The benchmark also exposed important operating trade-offs:
+
+- **Logistic Regression** achieved the highest recall (0.7723) and balanced accuracy (0.7743), but substantially lower precision (0.2783).
+- **HistGradientBoosting** achieved the highest precision (0.8571), but recall fell to only 0.1284.
+- **Random Forest** produced no positive predictions at the evaluated threshold, resulting in zero precision, recall, and F1 despite relatively high overall accuracy.
+- **Gaussian Naive Bayes** provided the strongest ROC-AUC and PR-AUC while maintaining a more useful precision-recall trade-off than the other benchmarked models.
+
+The results demonstrate why accuracy alone is inappropriate for this imbalanced dataset. Model selection therefore emphasizes ROC-AUC and PR-AUC alongside precision, recall, F1, and balanced accuracy.
+
+The champion's operating threshold is subsequently optimized on validation data rather than relying on the default 0.50 classification threshold.
+
+
 ## Model Performance
 
 The final production-candidate model was selected based on hold-out performance, with particular emphasis on ROC-AUC and PR-AUC because the target variable is imbalanced.
