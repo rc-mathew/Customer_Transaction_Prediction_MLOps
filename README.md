@@ -153,6 +153,77 @@ The results demonstrate why accuracy alone is inappropriate for this imbalanced 
 
 The champion's operating threshold is subsequently optimized on validation data rather than relying on the default 0.50 classification threshold.
 
+## Hyperparameter Tuning & Champion Model Selection
+
+The strongest tree-based candidate, `HistGradientBoostingClassifier`, was further optimized using `RandomizedSearchCV` with stratified cross-validation.
+
+### Tuning Strategy
+
+- **Cross-validation:** 3-fold `StratifiedKFold`
+- **Search method:** `RandomizedSearchCV`
+- **Search iterations:** 12
+- **Optimization metric:** ROC-AUC
+- **Random state:** 42
+
+The search covered:
+
+- Learning rate
+- Number of boosting iterations
+- Maximum leaf nodes
+- Minimum samples per leaf
+- L2 regularization
+
+### Best Hyperparameters
+
+| Hyperparameter | Best Value |
+|---|---:|
+| `learning_rate` | 0.05 |
+| `max_iter` | 250 |
+| `max_leaf_nodes` | 31 |
+| `min_samples_leaf` | 20 |
+| `l2_regularization` | 2.0 |
+
+**Best cross-validation ROC-AUC: 0.8749**
+
+### Tuned Model Validation Performance
+
+| Metric | Score |
+|---|---:|
+| Accuracy | 0.9104 |
+| Balanced Accuracy | 0.5632 |
+| Precision | 0.8602 |
+| Recall | 0.1286 |
+| F1 Score | 0.2238 |
+| ROC-AUC | **0.8773** |
+| PR-AUC | **0.5450** |
+
+The complete tuning results are stored in:
+
+`reports/metrics/hist_gradient_tuning_results.json`
+
+### Why Gaussian Naive Bayes Remained the Champion
+
+Hyperparameter tuning was performed to determine whether a more complex
+tree-based model could outperform the existing champion.
+
+Although the tuned HistGradientBoosting model achieved strong precision
+and ROC-AUC, its minority-class recall remained low (`0.1286`).
+
+For this imbalanced transaction-prediction problem, identifying positive
+cases is an important consideration. Therefore, model selection was not
+based on accuracy alone.
+
+The existing Gaussian Naive Bayes model provided a stronger overall
+trade-off across discrimination and minority-class detection metrics,
+including ROC-AUC, PR-AUC, recall, and F1.
+
+Consequently, Gaussian Naive Bayes was retained as the champion model.
+
+This demonstrates that model complexity alone does not determine
+production suitability. Candidate models were compared empirically and
+the final model was selected based on validation evidence rather than
+algorithm sophistication.
+
 
 ## Model Performance
 
@@ -238,6 +309,18 @@ The deployment threshold is maintained separately from the analytical threshold 
 This is intentionally distinguished from the notebook's analytical threshold. The notebook threshold (`0.2259`) represents the threshold obtained during analytical model evaluation, while the API threshold (`0.26`) represents the threshold currently configured in the deployed inference pipeline.
 
 In a real production environment, the deployment threshold should be selected according to business objectives, false-positive/false-negative costs, operational capacity, calibration performance, and governance requirements rather than relying only on F1 optimization.
+
+### Production Decision Threshold
+
+The analytical threshold selected during model evaluation is not assumed
+to be the final production decision threshold.
+
+In a real production environment, the deployment threshold should be
+selected using business costs, false-positive/false-negative trade-offs,
+operational capacity, probability calibration, and governance requirements.
+
+The threshold used by the FastAPI service is therefore maintained
+separately from the analytical model-selection threshold.
 
 ## 📊 Model Comparison & MLflow Experiment Tracking
 
