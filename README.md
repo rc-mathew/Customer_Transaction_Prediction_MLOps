@@ -75,6 +75,41 @@ The production ML pipeline was evaluated using stratified validation, probabilit
 The trained production ML pipeline is exposed through a FastAPI inference service for real-time customer transaction predictions. 
 
 ## Kubernetes Production Deployment
+
+
+The FastAPI inference service is deployed as a Kubernetes workload using
+production-oriented deployment settings.
+
+### Kubernetes Deployment Features
+
+- **2 application replicas** for basic availability
+- **RollingUpdate deployment strategy**
+- `maxUnavailable: 0` to maintain availability during updates
+- `maxSurge: 1` for controlled rolling deployments
+- CPU and memory resource requests and limits
+- HTTP readiness probe using `/health`
+- HTTP liveness probe using `/health`
+- Containerized FastAPI service exposed on port `8000`
+- Production container image pulled from Amazon ECR
+
+### Deployment Architecture
+
+```text
+Docker Image
+     ↓
+Amazon ECR
+     ↓
+Kubernetes Deployment
+     ↓
+2 FastAPI Pods
+     ↓
+Readiness / Liveness Health Checks
+     ↓
+Kubernetes Service
+     ↓
+AWS Load Balancer
+     ↓
+Live /predict Requests
 ## AWS ECR + Amazon EKS Production Deployment
 
 The FastAPI inference service was containerized with Docker and validated through a complete AWS-hosted Kubernetes deployment.
